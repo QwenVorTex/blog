@@ -1,0 +1,182 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SortControls from '@/components/SortControls.astro';
+import { fetchAllGames } from '@/lib/media';
+
+/**
+ * 游戏列表 — 只需填写游戏名称
+ * 构建时自动从 Steam 获取封面与链接
+ * 添加方式：在数组中追加一行字符串即可
+ */
+const gameNames: string[] = [
+  "Elden Ring",
+  "Hollow Knight",
+  "The Witcher 3: Wild Hunt",
+  "Hades",
+  "Death Stranding",
+  "Kingdom Come: Deliverance 2",
+  "Death Stranding 2",
+  "Destiny 2",
+  "Ark: Survival Evolution",
+  "Grand Auto Thief 5",
+  "Warframe",
+  "Halo",
+  "Cyberpunk 2077",
+  "Ori",
+  "Dishonored 2",
+  "Disco Elysium",
+  "Plants vs. Zombies Garden Warfare 2",
+  "Stardew Valley",
+  "P5R",
+  "Clair Obscur: Expedition 33",
+  "The Last of Us",
+  "Devil May Cry 5",
+  "Marvel's Spider-man",
+];
+
+const gameData = await fetchAllGames(gameNames);
+const totalCount = gameData.length;
+---
+
+<BaseLayout title="游戏 — TorQuen" description="TorQuen 玩过的游戏">
+  <section class="media-page">
+    <div class="container">
+      <header class="media-page__header">
+        <span class="text-giant media-page__bg-text" aria-hidden="true">游</span>
+        <h1 class="text-display anim-enter">游戏</h1>
+        <p class="media-page__stats anim-enter anim-delay-1">
+          共 <strong>{totalCount}</strong> 款
+        </p>
+      </header>
+
+      <SortControls target="#games-grid" options={[
+        { value: 'default', label: '默认' },
+        { value: 'alpha',   label: '首字母' },
+      ]} />
+
+      <div class="media-grid" id="games-grid">
+        {gameData.map((game) => (
+          <a
+            href={game.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="media-card scroll-reveal"
+            data-sort-name={game.name}
+            data-sort-date={game.releaseDate}
+          >
+            <div class="media-card__cover">
+              {game.image ? (
+                <img src={game.image} alt={game.name} loading="lazy" />
+              ) : (
+                <div class="media-card__fallback">{game.name.charAt(0)}</div>
+              )}
+            </div>
+            <div class="media-card__body">
+              <h4 class="media-card__name">{game.name}</h4>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .media-page {
+    padding: var(--space-16) 0;
+  }
+
+  .media-page__header {
+    position: relative;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: var(--border-thick);
+  }
+
+  .media-page__bg-text {
+    top: -30%;
+    right: 5%;
+  }
+
+  .media-page__stats {
+    margin-top: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* ── Media Grid ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .media-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--color-surface);
+    border: var(--border-thick);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition:
+      transform var(--dur-fast) var(--steps-small),
+      box-shadow var(--dur-fast) var(--steps-small);
+  }
+
+  .media-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .media-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--color-border);
+  }
+
+  .media-card__cover {
+    width: 100%;
+    aspect-ratio: 460 / 215;
+    overflow: hidden;
+    border-bottom: var(--border-thick);
+    background: var(--color-base);
+  }
+
+  .media-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-card__fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-4xl);
+    font-weight: 900;
+    color: var(--color-text-muted);
+  }
+
+  .media-card__body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .media-card__name {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .media-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

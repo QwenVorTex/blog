@@ -2,312 +2,12 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/Button.astro';
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  数据配置 — 编辑以下数组即可更新页面内容
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 /** 个人时间线 — 追加对象即可添加新节点 */
 const timeline = [
   { year: "2024", title: "大学开始", desc: "进入华中师范大学，学习计算机科学与技术。" },
   { year: "2025", title: "加入物联网协会", desc: "学习 UI/UX 设计，后端技术" },
   { year: "2026", title: "Digital Brutalism", desc: "创建了这个博客，用代码诠释「不对称的秩序」。" },
 ];
-
-/**
- * 追番列表 — 只需填写番剧名称
- * 构建时自动从 Bangumi (bgm.tv) 获取封面与评分
- * 添加方式：在数组中追加一行字符串即可
- */
-const animeNames: string[] = [
-  "进击的巨人",
-  "钢之炼金术师 FULLMETAL ALCHEMIST",
-  "命运石之门",
-  "可塑性记忆",
-  "罪恶王冠",
-  "月色真美",
-  "声之形",
-  "烟花",
-  "流汗吧！健身少女",
-  "我想吃掉你的胰脏",
-  "天气之子",
-  "铃芽之旅",
-  "你的名字",
-  "你想活出怎样的人生",
-  "言叶之庭",
-  "秒速五厘米",
-  "萤火之森",
-  "东京喰种",
-  "未闻花名",
-  "Charlotte",
-  "School Days",
-  "Happy Suger Life",
-  "四月的谎言",
-  "超时空辉夜姬",
-  "86-不存在的地域-",
-  "Overload",
-  "龙王的工作",
-  "化物语",
-  "魔女之旅",
-  "堀与宫村",
-  "未来日记",
-  "我的青春恋爱物语果然有问题",
-  "龙珠",
-  "青春猪头少年不会梦到兔女郎学姐",
-  "泡泡",
-  "剃须。然后捡到女高中生",
-  "你好世界",
-  "家有女友",
-  "租借女友",
-  "我推的孩子",
-  "One Room",
-  "埃罗芒阿老师",
-  "JOJO的奇妙冒险",
-  "冰菓",
-  "重来吧，魔王大人！",
-  "无职转生",
-  "路人女主的养成方式",
-  "她和她的猫",
-  "心灵想要大声呼喊",
-  "炎炎消防队",
-  "辉夜大小姐想让我告白",
-  "游戏人生",
-  "欢迎来到实力至上主义的教室",
-  "新世纪福音战士",
-  "紫罗兰永恒花园",
-  "中二病也要谈恋爱",
-  "来自风平浪静的明天",
-  "咒术回战",
-  "总之就是非常可爱",
-  "鬼灭之刃",
-  "某科学的超电磁炮",
-  "魔法禁书目录",
-  "Re0:从零开始的异世界生活",
-  "工作细胞",
-  "朝花夕誓",
-  "ReLIFE",
-  "境界的彼方",
-  "缘之空",
-  "寄生兽",
-  "DARLING in the FRANXX",
-  "散华礼弥",
-  "魔法科高校的劣等生",
-  "伤物语",
-  "甘城光辉游乐园",
-  "弱势角色友崎君",
-  "只有我不存在的城市",
-  "多罗罗",
-  "从多彩世界的明天开始",
-  "隐瞒之事",
-  "我女友与青梅竹马的惨烈修罗场",
-  "想哭泣的我戴上了猫的面具",
-  "电锯人",
-  "这个美术社大有问题！",
-  "玉子市场",
-  "龙与虎",
-  "22/7",
-  "昨日之歌",
-  "末日三问",
-  "关于我转生变成史莱姆这档事",
-  "转生成蜘蛛又怎样",
-  "Jose与虎与鱼们",
-  "人渣的本愿",
-  "白色相簿",
-  "杀戮天使",
-  "史莱姆日记",
-  "回复术士的重启人生",
-  "海边的异邦人",
-  "五等分的新娘",
-  "国王游戏",
-  "安达与岛村",
-  "刀剑神域",
-  "SSSS.GRIDMAN",
-  "冰海战记",
-  "薇薇-萤石眼之歌-",
-  "空之境界",
-  "SSSS.DYNAZENON",
-  "夏目友人帐",
-  "甲铁城的卡巴内瑞",
-  "暗杀教室",
-  "知晓天空之蓝的人啊",
-  "侦探已死",
-  "樱花庄的宠物女孩",
-  "一拳超人",
-  "Fate/Kaleid Liner",
-  "精灵幻想记",
-  "致不灭的你",
-  "看得见的女孩",
-  "我们的重制人生",
-  "死神少爷与黑女仆",
-  "机动奥特曼",
-  "卫宫家今天的饭",
-  "Fate/Stay Night",
-  "Fate/Grand Order",
-  "Fate/Zero",
-  "君主·埃尔梅罗二世",
-  "小林家的龙女仆",
-  "宿命回响",
-  "Arcane：League of Legends",
-  "世界顶尖的暗杀者，转生为异世界贵族",
-  "瓦尼塔斯的手记",
-  "哥布林杀手",
-  "平凡职业造就世界最强",
-  "夏日幽灵",
-  "从零开始的魔法书",
-  "Fate/EXTRA Last Encore",
-  "虚构推理",
-  "政宗君的复仇",
-  "世界尽头的圣骑士",
-  "我被逐出队伍后过上慢生活",
-  "犬屋敷",
-  "机巧少女不会受伤",
-  "终结的炽天使",
-  "灰与幻想的格林姆迦尔",
-  "异度侵入",
-  "斩！赤红之瞳",
-  "间谍过家家",
-  "勇者辞职不干了",
-  "天才王子的赤字国家振兴术",
-  "恋上换装娃娃",
-  "派对浪客诸葛孔明",
-  "LoveLive",
-  "夏日重现",
-  "契约之吻",
-  "骸骨骑士大人奇幻世界冒险中",
-  "赛博朋克：边缘行者",
-  "莉可莉丝",
-  "ALDNOAH.ZERO",
-  "重启咲良田",
-  "尸者的帝国",
-  "黑岩射手",
-  "孤独摇滚",
-  "相合之物",
-  "异世界舅舅",
-  "千与千寻",
-  "大鱼海棠",
-  "Re：创造主",
-  "地狱乐",
-  "通往夏天的隧道,再见的出口",
-  "想要成为影之实力者",
-  "天国大魔境",
-  "即使如此依旧步步紧逼",
-  "勇者赫鲁库",
-  "蜘蛛侠：平行宇宙",
-  "蜘蛛侠：纵横宇宙",
-  "PLUTO",
-  "我独自升级",
-  "我立于百万生命之上",
-  "胆大党",
-  "天空之城",
-  "哈尔的移动城堡",
-  "红猪",
-];
-
-/**
- * 游戏列表 — 只需填写游戏名称
- * 构建时自动从 Steam 获取封面与链接
- * 添加方式：在数组中追加一行字符串即可
- */
-const gameNames: string[] = [
-  "Elden Ring",
-  "Hollow Knight",
-  "The Witcher 3: Wild Hunt",
-  "Hades",
-  "Death Stranding",
-  "Kingdom Come: Deliverance 2",
-  "Death Stranding 2",
-  "Destiny 2",
-  "Ark: Survival Evolution",
-  "Grand Auto Thief 5",
-  "Warframe",
-  "Halo",
-  "Cyberpunk 2077",
-  "Ori",
-  "Dishonored 2",
-  "Disco Elysium",
-  "Plants vs. Zombies Garden Warfare 2",
-  "Stardew Valley",
-  "P5R",
-  "Clair Obscur: Expedition 33",
-  "The Last of Us",
-  "Devil May Cry 5",
-  "Marvel's Spider-man",
-];
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  构建时 API 获取（不影响运行时性能）
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-interface AnimeInfo {
-  name: string;
-  nameCn: string;
-  image: string;
-  score: number;
-  url: string;
-}
-
-interface GameInfo {
-  name: string;
-  image: string;
-  url: string;
-}
-
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-async function fetchAnime(keyword: string): Promise<AnimeInfo> {
-  const fb: AnimeInfo = { name: keyword, nameCn: keyword, image: "", score: 0, url: "#" };
-  try {
-    const res = await fetch(
-      `https://api.bgm.tv/search/subject/${encodeURIComponent(keyword)}?type=2&responseGroup=small`,
-      { headers: { "User-Agent": "TorQuenBlog/1.0 (Astro SSG)" } },
-    );
-    if (!res.ok) return fb;
-    const data = await res.json();
-    if (!data.list?.length) return fb;
-    const s = data.list[0];
-    return {
-      name: s.name || keyword,
-      nameCn: s.name_cn || s.name || keyword,
-      image: (s.images?.common || s.images?.medium || "").replace(/^http:/, "https:"),
-      score: s.score ?? 0,
-      url: `https://bgm.tv/subject/${s.id}`,
-    };
-  } catch {
-    return fb;
-  }
-}
-
-async function fetchGame(keyword: string): Promise<GameInfo> {
-  const fb: GameInfo = { name: keyword, image: "", url: "#" };
-  try {
-    const res = await fetch(
-      `https://store.steampowered.com/api/storesearch?term=${encodeURIComponent(keyword)}&l=schinese&cc=CN`,
-    );
-    if (!res.ok) return fb;
-    const data = await res.json();
-    if (!data.items?.length) return fb;
-    const g = data.items[0];
-    return {
-      name: g.name || keyword,
-      image: `https://cdn.akamai.steamstatic.com/steam/apps/${g.id}/header.jpg`,
-      url: `https://store.steampowered.com/app/${g.id}`,
-    };
-  } catch {
-    return fb;
-  }
-}
-
-// Sequential fetch with delay to respect API rate limits
-const animeData: AnimeInfo[] = [];
-for (const n of animeNames) {
-  animeData.push(await fetchAnime(n));
-  await wait(350);
-}
-
-const gameData: GameInfo[] = [];
-for (const n of gameNames) {
-  gameData.push(await fetchGame(n));
-  await wait(200);
-}
 ---
 
 <BaseLayout title="关于 — TorQuen" description="关于 TorQuen 和这个博客">
@@ -342,12 +42,6 @@ for (const n of gameNames) {
           <p>
             这个博客使用 <strong>Astro</strong> 构建，部署于<strong>腾讯云 EdgeOne Pages</strong>。
             设计灵感来源于 20 世纪中期的建筑粗野主义、Y2K 流行文化和波普艺术。
-          </p>
-          <p>
-            每一个元素都是刻意的——<strong>4px 的黑色边框</strong>不是失误，
-            是对精致 UI 的宣战；<strong>硬阴影</strong>不是过时，
-            是对物理实体感的致敬；<strong>12 FPS 的滚动</strong>不是性能问题，
-            是对平滑至上主义的颠覆。
           </p>
 
           <div class="about__actions">
@@ -385,64 +79,27 @@ for (const n of gameNames) {
         </div>
       </section>
 
-      <!-- ④ Anime -->
+      <!-- ④ Quick Links -->
       <section class="about-section">
         <div class="about-section__header">
           <span class="about-section__num" aria-hidden="true">03</span>
-          <h2 class="about-section__title">追番</h2>
+          <h2 class="about-section__title">更多</h2>
         </div>
-        <div class="media-grid">
-          {animeData.map((anime) => (
-            <a
-              href={anime.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="media-card scroll-reveal"
-            >
-              <div class="media-card__cover">
-                {anime.image ? (
-                  <img src={anime.image} alt={anime.nameCn} loading="lazy" />
-                ) : (
-                  <div class="media-card__fallback">{anime.nameCn.charAt(0)}</div>
-                )}
-              </div>
-              <div class="media-card__body">
-                <h4 class="media-card__name">{anime.nameCn}</h4>
-                {anime.score > 0 && (
-                  <span class="media-card__score">★ {anime.score}</span>
-                )}
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <!-- ⑤ Games -->
-      <section class="about-section">
-        <div class="about-section__header">
-          <span class="about-section__num" aria-hidden="true">04</span>
-          <h2 class="about-section__title">游戏</h2>
-        </div>
-        <div class="media-grid media-grid--wide">
-          {gameData.map((game) => (
-            <a
-              href={game.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="media-card media-card--wide scroll-reveal"
-            >
-              <div class="media-card__cover media-card__cover--wide">
-                {game.image ? (
-                  <img src={game.image} alt={game.name} loading="lazy" />
-                ) : (
-                  <div class="media-card__fallback">{game.name.charAt(0)}</div>
-                )}
-              </div>
-              <div class="media-card__body">
-                <h4 class="media-card__name">{game.name}</h4>
-              </div>
-            </a>
-          ))}
+        <div class="about__quick-links">
+          <a href="/anime" class="about__quick-card card scroll-reveal">
+            <span class="about__quick-icon" aria-hidden="true">番</span>
+            <div>
+              <h3>追番列表</h3>
+              <p>看看我在追什么番</p>
+            </div>
+          </a>
+          <a href="/games" class="about__quick-card card scroll-reveal">
+            <span class="about__quick-icon" aria-hidden="true">游</span>
+            <div>
+              <h3>游戏库</h3>
+              <p>我玩过的游戏合集</p>
+            </div>
+          </a>
         </div>
       </section>
     </div>
@@ -581,7 +238,6 @@ for (const n of gameNames) {
     padding-bottom: 0;
   }
 
-  /* Square marker — cycling through brand colors */
   .timeline__item::before {
     content: "";
     position: absolute;
@@ -623,90 +279,53 @@ for (const n of gameNames) {
     max-width: 45ch;
   }
 
-  /* ── Media Grid (Anime & Games) ── */
-  .media-grid {
+  /* ── Quick Links ── */
+  .about__quick-links {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: var(--space-6);
   }
 
-  .media-grid--wide {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  }
-
-  .media-card {
-    display: block;
+  .about__quick-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
     text-decoration: none;
     color: inherit;
-    background: var(--color-surface);
-    border: var(--border-thick);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-    transition:
-      transform var(--dur-fast) var(--steps-small),
-      box-shadow var(--dur-fast) var(--steps-small);
+    padding: var(--space-6);
   }
 
-  .media-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: var(--shadow-xl);
+  .about__quick-card:hover {
+    text-decoration: none;
+    color: inherit;
   }
 
-  .media-card:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 0 var(--color-border);
+  .about__quick-card h3 {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    margin-bottom: var(--space-1);
+    border: none;
+    padding: 0;
   }
 
-  .media-card__cover {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    border-bottom: var(--border-thick);
-    background: var(--color-base);
+  .about__quick-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
   }
 
-  .media-card__cover--wide {
-    aspect-ratio: 460 / 215;
-  }
-
-  .media-card__cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .media-card__fallback {
-    width: 100%;
-    height: 100%;
+  .about__quick-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--text-4xl);
+    background: var(--color-border);
+    color: var(--color-surface);
+    font-size: var(--text-2xl);
     font-weight: 900;
-    color: var(--color-text-muted);
-  }
-
-  .media-card__body {
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .media-card__name {
-    font-size: var(--text-sm);
-    font-weight: 700;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .media-card__score {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    color: var(--color-action);
-    margin-top: var(--space-1);
+    border: var(--border-thick);
   }
 
   /* ── Responsive ── */
@@ -720,12 +339,7 @@ for (const n of gameNames) {
       max-width: 250px;
     }
 
-    .media-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: var(--space-4);
-    }
-
-    .media-grid--wide {
+    .about__quick-links {
       grid-template-columns: 1fr;
     }
   }

@@ -1,21 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostCard from '@/components/PostCard.astro';
+import SortControls from '@/components/SortControls.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Group posts by year
-const postsByYear = allPosts.reduce<Record<number, typeof allPosts>>((acc, post) => {
-  const year = post.data.pubDate.getFullYear();
-  if (!acc[year]) acc[year] = [];
-  acc[year].push(post);
-  return acc;
-}, {});
-
-const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 ---
 
 <BaseLayout title="文章归档 | Blog" description="所有博客文章">
@@ -32,27 +23,30 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
         </p>
       </header>
 
-      <!-- Posts by Year -->
-      {years.map((year) => (
-        <div class="archive__year-group">
-          <div class="archive__year-label">
-            <span class="badge">{year}</span>
+      <SortControls target="#posts-grid" options={[
+        { value: 'default', label: '最新' },
+        { value: 'alpha',   label: '首字母' },
+        { value: 'date',    label: '最早' },
+      ]} />
+
+      <div class="grid grid--brutalist" id="posts-grid">
+        {allPosts.map((post, i) => (
+          <div
+            data-sort-name={post.data.title}
+            data-sort-date={post.data.pubDate.toISOString().slice(0, 10)}
+          >
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/posts/${post.id}`}
+              pubDate={post.data.pubDate}
+              heroColor={post.data.heroColor}
+              tags={post.data.tags}
+              index={i}
+            />
           </div>
-          <div class="grid grid--brutalist">
-            {postsByYear[year].map((post, i) => (
-              <PostCard
-                title={post.data.title}
-                description={post.data.description}
-                href={`/posts/${post.id}`}
-                pubDate={post.data.pubDate}
-                heroColor={post.data.heroColor}
-                tags={post.data.tags}
-                index={i}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {allPosts.length === 0 && (
         <div class="card card--flat" style="text-align: center; padding: var(--space-16);">
@@ -84,13 +78,5 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
   .archive__count {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
-  }
-
-  .archive__year-group {
-    margin-bottom: var(--space-12);
-  }
-
-  .archive__year-label {
-    margin-bottom: var(--space-6);
   }
 </style>

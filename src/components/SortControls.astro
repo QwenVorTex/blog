@@ -1,0 +1,154 @@
+---
+/**
+ * SortControls — 粗野主义风格的排序切换按钮组
+ * 在客户端通过 JS 对 data-sort-container 中的子元素排序
+ */
+interface Props {
+  /** 排序容器的 CSS 选择器 */
+  target: string;
+  /** 可选排序方式 */
+  options?: Array<{ value: string; label: string }>;
+}
+
+const { target, options = [
+  { value: 'default', label: '默认' },
+  { value: 'alpha',   label: '首字母' },
+  { value: 'date',    label: '时间' },
+] } = Astro.props;
+---
+
+<div class="sort-controls" data-sort-target={target}>
+  <span class="sort-controls__label">排序</span>
+  <div class="sort-controls__btns">
+    {options.map((opt, i) => (
+      <button
+        class:list={['sort-controls__btn', { 'is-active': i === 0 }]}
+        data-sort-value={opt.value}
+      >
+        {opt.label}
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  .sort-controls__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .sort-controls__btns {
+    display: flex;
+    gap: 0;
+  }
+
+  .sort-controls__btn {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: var(--border-thick);
+    cursor: pointer;
+    transition: all var(--dur-instant) var(--steps-micro);
+    margin-left: -4px;
+  }
+
+  .sort-controls__btn:first-child {
+    margin-left: 0;
+  }
+
+  .sort-controls__btn:hover {
+    background: var(--color-accent);
+  }
+
+  .sort-controls__btn.is-active {
+    background: var(--color-border);
+    color: var(--color-surface);
+    z-index: 1;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .sort-controls {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  function initSortControls() {
+    document.querySelectorAll<HTMLElement>('.sort-controls').forEach((ctrl) => {
+      const targetSelector = ctrl.dataset.sortTarget;
+      if (!targetSelector) return;
+      const container = document.querySelector<HTMLElement>(targetSelector);
+      if (!container) return;
+
+      // Save original order
+      const items = Array.from(container.children) as HTMLElement[];
+      items.forEach((el, i) => el.dataset.sortOriginal = String(i));
+
+      const buttons = ctrl.querySelectorAll<HTMLButtonElement>('.sort-controls__btn');
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          // Update active state
+          buttons.forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+
+          const mode = btn.dataset.sortValue;
+          const currentItems = Array.from(container.children) as HTMLElement[];
+
+          let sorted: HTMLElement[];
+
+          switch (mode) {
+            case 'alpha':
+              sorted = [...currentItems].sort((a, b) => {
+                const nameA = (a.dataset.sortName || '').toLowerCase();
+                const nameB = (b.dataset.sortName || '').toLowerCase();
+                return nameA.localeCompare(nameB, 'zh-CN');
+              });
+              break;
+
+            case 'date':
+              sorted = [...currentItems].sort((a, b) => {
+                const dateA = a.dataset.sortDate || '0';
+                const dateB = b.dataset.sortDate || '0';
+                // Most recent first
+                return dateB.localeCompare(dateA);
+              });
+              break;
+
+            default:
+              // Restore original order
+              sorted = [...currentItems].sort((a, b) => {
+                return Number(a.dataset.sortOriginal) - Number(b.dataset.sortOriginal);
+              });
+              break;
+          }
+
+          // Re-append in sorted order (CSS transition would break grids, so just swap)
+          sorted.forEach((el) => container.appendChild(el));
+        });
+      });
+    });
+  }
+
+  // Run on initial load and Astro page transitions
+  initSortControls();
+  document.addEventListener('astro:after-swap', initSortControls);
+</script>
