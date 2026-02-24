@@ -1,0 +1,182 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '@/components/Tag.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroColor?: 'yellow' | 'red' | 'blue' | 'black';
+  tags?: string[];
+}
+
+const { title, description, pubDate, updatedDate, heroColor = 'yellow', tags = [] } = Astro.props;
+
+const colorMap = {
+  yellow: 'var(--color-accent)',
+  red: 'var(--color-action)',
+  blue: 'var(--color-link)',
+  black: 'var(--color-border)',
+};
+
+const heroBackground = colorMap[heroColor];
+const textColor = heroColor === 'black' || heroColor === 'red' ? 'var(--color-surface)' : 'var(--color-text)';
+
+const formattedDate = pubDate.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdate = updatedDate?.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} | Blog`} description={description}>
+  <article class="post">
+    <!-- Hero Section -->
+    <header class="post__hero" style={`background: ${heroBackground}; color: ${textColor};`}>
+      <div class="container">
+        <div class="post__meta text-label anim-enter">
+          <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+          {updatedDate && <span>· 更新于 {formattedUpdate}</span>}
+        </div>
+        <h1 class="post__title anim-enter anim-delay-1">{title}</h1>
+        <p class="post__desc anim-enter anim-delay-2">{description}</p>
+        {tags.length > 0 && (
+          <div class="post__tags anim-enter anim-delay-3">
+            {tags.map((tag) => (
+              <Tag label={tag} />
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="post__body container container--narrow">
+      <div class="post__content scroll-reveal">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post__hero {
+    padding: var(--space-16) 0 var(--space-12);
+    border-bottom: var(--border-thick);
+  }
+
+  .post__meta {
+    margin-bottom: var(--space-4);
+    opacity: 0.8;
+  }
+
+  .post__title {
+    font-size: var(--text-4xl);
+    max-width: 14ch;
+    margin-bottom: var(--space-4);
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .post__desc {
+    font-size: var(--text-lg);
+    max-width: 50ch;
+    opacity: 0.9;
+    margin-bottom: var(--space-6);
+  }
+
+  .post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .post__body {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-16);
+  }
+
+  .post__content {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  .post__content :global(h2) {
+    margin-top: var(--space-12);
+  }
+
+  .post__content :global(h3) {
+    margin-top: var(--space-8);
+  }
+
+  .post__content :global(ul),
+  .post__content :global(ol) {
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-5);
+  }
+
+  .post__content :global(ul) {
+    list-style: square;
+  }
+
+  .post__content :global(ol) {
+    list-style: decimal;
+  }
+
+  .post__content :global(li) {
+    margin-bottom: var(--space-2);
+  }
+
+  .post__content :global(img) {
+    border: var(--border-thick);
+    box-shadow: var(--shadow-lg);
+    margin: var(--space-8) 0;
+  }
+
+  .post__content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--border-thick);
+    margin: var(--space-6) 0;
+    box-shadow: var(--shadow-md);
+  }
+
+  .post__content :global(th) {
+    background: var(--color-border);
+    color: var(--color-surface);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border: var(--border-thin);
+    border-color: var(--color-text-muted);
+  }
+
+  .post__content :global(td) {
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-thin);
+    font-size: var(--text-sm);
+  }
+
+  .post__content :global(tr:nth-child(even)) {
+    background: rgba(0,0,0,0.03);
+  }
+
+  @media (max-width: 768px) {
+    .post__hero {
+      padding: var(--space-10) 0 var(--space-8);
+    }
+    .post__title {
+      font-size: var(--text-3xl);
+    }
+  }
+</style>

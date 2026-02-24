@@ -1,0 +1,30 @@
+---
+/**
+ * ScrollEngine Component
+ * 集成低帧率滚动引擎和滚动触发 reveal
+ * 在客户端初始化，尊重 prefers-reduced-motion
+ */
+---
+
+<script>
+  import { initScrollEngine } from '@/scripts/scroll-engine';
+  import { initScrollReveal } from '@/scripts/scroll-reveal';
+
+  // Only activate scroll engine on non-touch devices and when user permits motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  // Initialize scroll reveal (always active)
+  initScrollReveal();
+
+  // Initialize custom scroll engine (desktop only, motion permitted)
+  if (!prefersReducedMotion && !isTouchDevice) {
+    const engine = initScrollEngine();
+    engine.start();
+
+    // Clean up on page navigation (Astro view transitions)
+    document.addEventListener('astro:before-swap', () => {
+      engine.destroy();
+    });
+  }
+</script>

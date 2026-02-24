@@ -1,0 +1,157 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+---
+
+<BaseLayout title="关于 | Blog" description="关于这个博客和它的创作者">
+  <section class="about">
+    <div class="container">
+      <header class="about__header">
+        <span class="text-giant about__bg-text" aria-hidden="true">ME</span>
+        <h1 class="text-display anim-enter">关于</h1>
+      </header>
+
+      <div class="about__grid">
+        <!-- Portrait Card -->
+        <div class="about__portrait card card--accent anim-enter anim-delay-1">
+          <div class="about__avatar">
+            <div class="about__avatar-placeholder" aria-hidden="true">
+              <span>:)</span>
+            </div>
+          </div>
+          <div class="about__info">
+            <h3 style="border:none; padding:0;">Your Name</h3>
+            <p class="text-label">开发者 / 设计探索者</p>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="about__bio anim-enter anim-delay-2">
+          <h2>你好，世界。</h2>
+          <p>
+            这是一个以<span class="text-highlight">新粗野主义</span>美学构建的个人博客。
+            我相信数字界面不必千篇一律——直角比圆角更有力量，卡帧比丝滑更有性格。
+          </p>
+          <p>
+            这个博客使用 <strong>Astro</strong> 构建，部署于<strong>腾讯云 EdgeOne Pages</strong>。
+            设计灵感来源于 20 世纪中期的建筑粗野主义、Y2K 流行文化和波普艺术。
+          </p>
+          <p>
+            每一个元素都是刻意的——<strong>4px 的黑色边框</strong>不是失误，
+            是对精致 UI 的宣战；<strong>硬阴影</strong>不是过时，
+            是对物理实体感的致敬；<strong>12 FPS 的滚动</strong>不是性能问题，
+            是对平滑至上主义的颠覆。
+          </p>
+
+          <div class="about__actions">
+            <Button label="GitHub" href="https://github.com" variant="primary" external />
+            <Button label="RSS 订阅" href="/rss.xml" variant="ghost" />
+          </div>
+
+          <!-- Tech Stack -->
+          <div class="about__stack">
+            <h3>技术栈</h3>
+            <div class="about__stack-grid">
+              <div class="tag tag--accent">Astro</div>
+              <div class="tag tag--link">TypeScript</div>
+              <div class="tag">CSS</div>
+              <div class="tag tag--action">EdgeOne Pages</div>
+              <div class="tag">MDX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    padding: var(--space-16) 0;
+  }
+
+  .about__header {
+    position: relative;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: var(--border-thick);
+  }
+
+  .about__bg-text {
+    top: -30%;
+    right: 5%;
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: var(--space-10);
+    align-items: start;
+  }
+
+  .about__portrait {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-6));
+  }
+
+  .about__avatar {
+    margin-bottom: var(--space-4);
+  }
+
+  .about__avatar-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--color-border);
+    border: var(--border-thick);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-4xl);
+    color: var(--color-surface);
+    font-family: var(--font-mono);
+  }
+
+  .about__info h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .about__bio h2 {
+    margin-bottom: var(--space-6);
+  }
+
+  .about__bio p {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-5);
+    max-width: 55ch;
+  }
+
+  .about__actions {
+    display: flex;
+    gap: var(--space-4);
+    margin: var(--space-8) 0;
+  }
+
+  .about__stack {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: var(--border-medium);
+  }
+
+  .about__stack-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  @media (max-width: 768px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__portrait {
+      position: static;
+      max-width: 250px;
+    }
+  }
+</style>

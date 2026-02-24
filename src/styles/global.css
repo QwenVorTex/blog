@@ -1,0 +1,136 @@
+/* ============================================
+   GLOBAL RESET & BASE STYLES
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@import './variables.css';
+@import './typography.css';
+@import './brutalist.css';
+@import './animations.css';
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Disable smooth scroll; we control it via JS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-base);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 3px;
+  font-weight: 700;
+  transition: color var(--dur-fast) var(--steps-small),
+              text-decoration-color var(--dur-fast) var(--steps-small);
+}
+
+a:hover {
+  color: var(--color-action);
+  text-decoration: underline;
+  text-decoration-color: var(--color-action);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-code-bg);
+  color: var(--color-accent);
+  padding: 0.15em 0.4em;
+  border: var(--border-thin);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--color-code-bg);
+  color: #e0e0e0;
+  padding: var(--space-6);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-md);
+  overflow-x: auto;
+  line-height: 1.7;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 6px solid var(--color-accent);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-surface);
+  font-style: italic;
+  font-weight: 500;
+  margin: var(--space-6) 0;
+  border-top: var(--border-thin);
+  border-bottom: var(--border-thin);
+  border-right: var(--border-thin);
+}
+
+hr {
+  border: none;
+  border-top: var(--border-thick);
+  margin: var(--space-10) 0;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-border);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-base);
+  border-left: var(--border-medium);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border: 2px solid var(--color-base);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-action);
+}

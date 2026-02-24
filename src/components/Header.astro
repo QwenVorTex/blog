@@ -1,0 +1,209 @@
+---
+const navItems = [
+  { label: '首页', href: '/' },
+  { label: '文章', href: '/archive' },
+  { label: '关于', href: '/about' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="site-header__inner container">
+    <!-- Logo -->
+    <a href="/" class="site-header__logo" aria-label="返回首页">
+      <span class="site-header__logo-block"></span>
+      <span class="site-header__logo-text">BLOG</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="site-header__nav" aria-label="主导航">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class:list={['site-header__link', { 'is-active': currentPath === item.href }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile toggle -->
+    <button class="site-header__burger" aria-label="打开菜单" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="site-header__mobile-menu" id="mobile-menu">
+    <nav>
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class:list={['site-header__mobile-link', { 'is-active': currentPath === item.href }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--color-base);
+    border-bottom: var(--border-thick);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .site-header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .site-header__logo:hover {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .site-header__logo-block {
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: var(--color-border);
+    border: none;
+    transition: transform var(--dur-fast) var(--steps-small);
+  }
+
+  .site-header__logo:hover .site-header__logo-block {
+    transform: rotate(45deg);
+    background: var(--color-action);
+  }
+
+  .site-header__logo-text {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 900;
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
+  }
+
+  .site-header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .site-header__link {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    padding: var(--space-2) var(--space-4);
+    color: var(--color-text);
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: all var(--dur-instant) var(--steps-micro);
+  }
+
+  .site-header__link:hover {
+    border-color: var(--color-border);
+    background: var(--color-accent);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-header__link.is-active {
+    background: var(--color-border);
+    color: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  /* Burger */
+  .site-header__burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-2);
+    cursor: pointer;
+  }
+
+  .site-header__burger span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background: var(--color-border);
+    transition: transform var(--dur-fast) var(--steps-small);
+  }
+
+  /* Mobile menu */
+  .site-header__mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-base);
+    z-index: var(--z-overlay);
+    border-top: var(--border-thick);
+    padding: var(--space-8);
+  }
+
+  .site-header__mobile-menu.is-open {
+    display: block;
+  }
+
+  .site-header__mobile-link {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-text);
+    text-decoration: none;
+    padding: var(--space-4) 0;
+    border-bottom: var(--border-medium);
+    transition: color var(--dur-instant) step-end;
+  }
+
+  .site-header__mobile-link:hover,
+  .site-header__mobile-link.is-active {
+    color: var(--color-action);
+  }
+
+  @media (max-width: 768px) {
+    .site-header__nav { display: none; }
+    .site-header__burger { display: flex; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('is-open');
+    const isOpen = menu?.classList.contains('is-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? '关闭菜单' : '打开菜单');
+  });
+</script>

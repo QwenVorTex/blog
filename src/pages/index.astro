@@ -1,0 +1,97 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HeroSection from '@/components/HeroSection.astro';
+import PostCard from '@/components/PostCard.astro';
+import Button from '@/components/Button.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('posts'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const recentPosts = allPosts.slice(0, 6);
+---
+
+<BaseLayout title="Blog · 新粗野主义">
+  <!-- Hero -->
+  <HeroSection
+    title="DIGITAL"
+    accentWord="BRUTALISM"
+    subtitle="一个以新粗野主义美学构建的个人博客。不对称的几何、暴力的硬阴影、定格的卡帧动效——拒绝平庸的数字空间。"
+  />
+
+  <!-- Recent Posts -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="anim-enter">最新文章</h2>
+        <Button label="查看全部" href="/archive" variant="ghost" />
+      </div>
+
+      <div class="grid grid--brutalist">
+        {recentPosts.map((post, i) => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/posts/${post.id}`}
+            pubDate={post.data.pubDate}
+            heroColor={post.data.heroColor}
+            tags={post.data.tags}
+            index={i}
+          />
+        ))}
+      </div>
+
+      {allPosts.length === 0 && (
+        <div class="empty-state card card--flat">
+          <p class="text-display" style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">
+            NO POSTS YET
+          </p>
+          <p>还没有文章。开始写作吧！</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Feature Blocks -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        <div class="card card--accent scroll-reveal">
+          <h3 style="border:none; padding:0;">反设计</h3>
+          <p>拒绝圆角与渐变，拥抱直角与硬阴影。每一个 UI 元素都被从背景中暴力剥离。</p>
+        </div>
+        <div class="card card--action scroll-reveal">
+          <h3 style="border:none; padding:0; color: inherit;">卡帧动效</h3>
+          <p>告别 60FPS 的丝滑动画。12 帧的定格效果赋予界面机械打字机般的物理质感。</p>
+        </div>
+        <div class="card card--link scroll-reveal">
+          <h3 style="border:none; padding:0; color: inherit;">撞色工程</h3>
+          <p>基于 WCAG 对比度标准的色彩系统，在大胆撞色中确保每个 UI 元素绝对清晰可见。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding: var(--space-16) 0;
+  }
+
+  .section__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-10);
+  }
+
+  .section__header h2 {
+    margin-bottom: 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-16);
+  }
+</style>
