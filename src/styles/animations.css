@@ -100,14 +100,8 @@
   animation: glitch-text 0.3s steps(5, end);
 }
 
-/* ── Page Transition ── */
-@keyframes page-wipe {
-  0%   { clip-path: inset(0 100% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-
 .anim-page-enter {
-  animation: page-wipe 0.5s var(--steps-medium) both;
+  animation: brutalist-enter var(--dur-normal) var(--steps-medium) both;
 }
 
 /* ── Rotate Step ── */

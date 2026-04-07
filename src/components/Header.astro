@@ -163,7 +163,11 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
     color: var(--color-text);
     text-decoration: none;
     border: 2px solid transparent;
-    transition: all var(--dur-instant) var(--steps-micro);
+    transition: transform var(--dur-instant) var(--steps-micro),
+                background-color var(--dur-instant) var(--steps-micro),
+                color var(--dur-instant) var(--steps-micro),
+                border-color var(--dur-instant) var(--steps-micro),
+                box-shadow var(--dur-instant) var(--steps-micro);
   }
 
   .site-header__link:hover {
@@ -171,12 +175,19 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
     background: var(--color-accent);
     color: var(--color-text);
     text-decoration: none;
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
   }
 
   .site-header__link.is-active {
     background: var(--color-border);
     color: var(--color-surface);
     border-color: var(--color-border);
+  }
+
+  .site-header__link:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px var(--color-border);
   }
 
   /* ── Dropdown ── */
@@ -219,6 +230,8 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
       opacity var(--dur-fast) var(--steps-small),
       transform var(--dur-fast) var(--steps-small),
       visibility 0s linear var(--dur-fast);
+    transform-origin: top right;
+    pointer-events: none;
   }
 
   .site-header__dropdown:hover .site-header__dropdown-menu,
@@ -227,6 +240,8 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
+    animation: brutalist-scale-in var(--dur-fast) var(--steps-small) both;
     transition:
       opacity var(--dur-fast) var(--steps-small),
       transform var(--dur-fast) var(--steps-small),
@@ -244,7 +259,10 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
     color: var(--color-text);
     text-decoration: none;
     border-bottom: 2px solid transparent;
-    transition: all var(--dur-instant) var(--steps-micro);
+    transition: transform var(--dur-instant) var(--steps-micro),
+                background-color var(--dur-instant) var(--steps-micro),
+                color var(--dur-instant) var(--steps-micro),
+                box-shadow var(--dur-instant) var(--steps-micro);
   }
 
   .site-header__dropdown-item:last-child {
@@ -255,6 +273,10 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
     background: var(--color-accent);
     color: var(--color-text);
     text-decoration: none;
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 1;
   }
 
   .site-header__dropdown-item.is-active {
@@ -312,6 +334,7 @@ const isDropdownActive = dropdownItems.some((item) => currentPath === item.href)
 
   .site-header__mobile-menu.is-open {
     display: block;
+    animation: brutalist-slide-right var(--dur-normal) var(--steps-medium) both;
   }
 
   .site-header__mobile-link {

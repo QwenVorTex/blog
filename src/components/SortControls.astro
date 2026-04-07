@@ -17,7 +17,7 @@ const { target, options = [
 ] } = Astro.props;
 ---
 
-<div class="sort-controls" data-sort-target={target}>
+<div class="sort-controls scroll-reveal" data-sort-target={target}>
   <span class="sort-controls__label">排序</span>
   <div class="sort-controls__btns">
     {options.map((opt, i) => (
@@ -64,7 +64,11 @@ const { target, options = [
     color: var(--color-text);
     border: var(--border-thick);
     cursor: pointer;
-    transition: all var(--dur-instant) var(--steps-micro);
+    transition: transform var(--dur-instant) var(--steps-micro),
+                box-shadow var(--dur-instant) var(--steps-micro),
+                background-color var(--dur-instant) var(--steps-micro),
+                color var(--dur-instant) var(--steps-micro),
+                border-color var(--dur-instant) var(--steps-micro);
     margin-left: -4px;
   }
 
@@ -74,6 +78,10 @@ const { target, options = [
 
   .sort-controls__btn:hover {
     background: var(--color-accent);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 1;
   }
 
   .sort-controls__btn.is-active {
@@ -81,6 +89,11 @@ const { target, options = [
     color: var(--color-surface);
     z-index: 1;
     position: relative;
+  }
+
+  .sort-controls__btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px var(--color-border);
   }
 
   @media (max-width: 768px) {

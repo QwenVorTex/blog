@@ -23,12 +23,20 @@
   padding: var(--space-6);
   position: relative;
   transition: transform var(--dur-fast) var(--steps-small),
-              box-shadow var(--dur-fast) var(--steps-small);
+              box-shadow var(--dur-fast) var(--steps-small),
+              background-color var(--dur-instant) var(--steps-micro),
+              color var(--dur-instant) var(--steps-micro),
+              border-color var(--dur-instant) var(--steps-micro);
 }
 
 .card:hover {
   transform: translate(-4px, -4px);
   box-shadow: 12px 12px 0px 0px var(--color-border);
+}
+
+.card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px var(--color-border);
 }
 
 .card--accent {
@@ -68,14 +76,17 @@
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: transform var(--dur-fast) var(--steps-small),
-              box-shadow var(--dur-fast) var(--steps-small);
+              box-shadow var(--dur-fast) var(--steps-small),
+              background-color var(--dur-instant) var(--steps-micro),
+              color var(--dur-instant) var(--steps-micro),
+              border-color var(--dur-instant) var(--steps-micro);
   text-decoration: none;
   color: var(--color-text);
 }
 
 .btn:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 7px 7px 0px 0px var(--color-border);
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0px 0px var(--color-border);
   color: var(--color-text);
   text-decoration: none;
 }
@@ -103,8 +114,11 @@
 .btn--ghost:hover {
   background: var(--color-border);
   color: var(--color-surface);
-  box-shadow: none;
-  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--ghost:active {
+  box-shadow: 2px 2px 0px 0px var(--color-border);
 }
 
 .btn--small {
@@ -125,12 +139,20 @@
   border: var(--border-medium);
   background: var(--color-surface);
   transition: transform var(--dur-instant) var(--steps-micro),
-              box-shadow var(--dur-instant) var(--steps-micro);
+              box-shadow var(--dur-instant) var(--steps-micro),
+              background-color var(--dur-instant) var(--steps-micro),
+              color var(--dur-instant) var(--steps-micro),
+              border-color var(--dur-instant) var(--steps-micro);
 }
 
 .tag:hover {
   transform: translate(-2px, -2px);
   box-shadow: var(--shadow-sm);
+}
+
+.tag:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px var(--color-border);
 }
 
 .tag--accent  { background: var(--color-accent); }
