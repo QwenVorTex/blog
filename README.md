@@ -1,281 +1,136 @@
-# Digital Brutalism Blog
+# TorQuen Blog
 
-一个以**新粗野主义 (Neo-Brutalism)** 美学构建的个人博客，使用 [Astro](https://astro.build) 框架开发。
+这是我的个人博客仓库。
 
-4px 黑色边框、硬阴影、步进式动画 —— 拒绝平庸的数字空间。
+风格上我一直偏向新粗野主义：粗边框、硬阴影、卡帧动效、带一点故意的不规整。但现在这套站点已经不只是“做个风格展示页”了，它更像一个我会长期往里写东西、不断往下改的博客。
 
-## 特性
+目前这套博客用 [Astro](https://astro.build) 构建，静态输出，文章写在 Markdown 里，样式基本都是原生 CSS。
 
-- 🏗️ **新粗野主义设计系统** — 统一的 Design Token、硬阴影（`8px 8px 0px 0px #000`）、`steps()` 步进动画
-- 📝 **Markdown / MDX 文章** — 支持标签、草稿、四种主题色（黄 / 红 / 蓝 / 黑）
-- 📺 **追番列表** — 构建时自动从 Bangumi API 抓取封面、评分与链接
-- 🎮 **游戏库** — 构建时自动从 Steam Store API 获取封面与商店链接
-- 🔀 **客户端排序** — 文章、番剧、游戏支持按首字母 / 时间排序
-- 🕹️ **12 FPS 卡帧滚动引擎** — JavaScript 帧率限制器 + 空间离散化，定格动画质感
-- 📡 **RSS 订阅** — 自动生成 `/rss.xml` Feed
-- 📱 **响应式设计** — 移动端完整适配，触屏设备自动回退原生滚动
-- ♿ **无障碍** — WCAG 对比度工程 + `prefers-reduced-motion` 自动禁用动画
+## 现在这版有什么
 
-## 快速开始
+- 首页已经改成内容优先，不再只是放一张大视觉图
+- 文章页补了更完整的 SEO 信息、RSS 和结构化数据
+- 追番和游戏页面现在是本地维护的静态清单，不再在构建时去抓外部 API
+- 全站动效统一成卡帧语言，交互不会一半丝滑一半生硬
+- 桌面端有一套自定义光标，风格跟站点一致
+- 文章支持标签、草稿、更新时间、相关文章
+
+## 开发
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动开发服务器（默认 http://localhost:4321）
 npm run dev
+```
 
-# 构建静态站点（输出到 dist/）
+构建和预览：
+
+```bash
 npm run build
-
-# 本地预览构建结果
 npm run preview
 ```
 
-## 项目结构
+## 内容放在哪里
 
-```
-Blog/
-├── public/                    # 静态资源（直接复制到 dist/）
-│   ├── favicon.svg              # 几何色块 favicon
-│   └── robots.txt               # 爬虫规则 + sitemap 声明
-├── src/
-│   ├── components/            # 可复用 UI 组件
-│   │   ├── Button.astro         # 粗野主义按钮（primary / action / ghost）
-│   │   ├── Footer.astro         # 页脚 + 跑马灯
-│   │   ├── Header.astro         # 顶部导航栏（含「更多 ▾」下拉菜单 + 移动端汉堡菜单）
-│   │   ├── HeroSection.astro    # 首页大标题 Hero 区域（几何色块装饰）
-│   │   ├── PostCard.astro       # 文章卡片（硬阴影 + 微旋转不对称布局）
-│   │   ├── ScrollEngine.astro   # 滚动引擎入口（客户端初始化）
-│   │   ├── SortControls.astro   # 排序切换控件（默认 / 首字母）
-│   │   └── Tag.astro            # 标签徽章
-│   ├── content/               # 内容集合
-│   │   └── posts/               # 博客文章（Markdown / MDX）
-│   │       ├── hello-neo-brutalism.md
-│   │       ├── scroll-engine.md
-│   │       ├── color-engineering.md
-│   │       └── learningProcess.md
-│   ├── layouts/               # 页面布局模板
-│   │   ├── BaseLayout.astro     # 根布局（<html> + Header + Footer + ScrollEngine）
-│   │   └── PostLayout.astro     # 文章详情布局（Hero 头图 + 正文排版）
-│   ├── lib/                   # 工具库
-│   │   └── media.ts             # Bangumi & Steam API 封装（构建时数据获取）
-│   ├── pages/                 # 路由页面（文件即路由）
-│   │   ├── index.astro          # 首页（Hero + 最新文章 + 特性卡片）
-│   │   ├── archive.astro        # 文章归档（按年分组）
-│   │   ├── about.astro          # 关于页（个人简介 + 时间线 + 技术栈）
-│   │   ├── anime.astro          # 追番列表（Bangumi 数据）
-│   │   ├── games.astro          # 游戏库（Steam 数据）
-│   │   ├── 404.astro            # 404 页面
-│   │   ├── rss.xml.ts           # RSS Feed 生成器
-│   │   └── posts/
-│   │       └── [slug].astro     # 文章详情动态路由
-│   ├── scripts/               # 客户端 TypeScript 脚本
-│   │   ├── scroll-engine.ts     # 12 FPS 低帧率滚动引擎（时间 + 空间离散化）
-│   │   └── scroll-reveal.ts     # IntersectionObserver 滚动入场动画
-│   ├── styles/                # 设计系统（模块化 CSS）
-│   │   ├── variables.css        # Design Token（色彩、阴影、间距、步进函数）
-│   │   ├── global.css           # 全局 Reset + 基础样式 + 滚动条
-│   │   ├── typography.css       # 排版系统（装饰化大标题 + 辅助类）
-│   │   ├── brutalist.css        # 组件样式（card / btn / tag / grid / marquee）
-│   │   └── animations.css       # 步进式动画（入场 / 悬停 / 闪烁 / 故障）
-│   └── content.config.ts     # 内容集合 Schema 定义（Zod 校验）
-├── astro.config.mjs           # Astro 框架配置（MDX / Sitemap）
-├── tsconfig.json              # TypeScript 配置（路径别名）
-└── package.json
-```
+文章都在 `src/content/posts/`。
 
----
+写新文章时直接新建一个 `.md` 或 `.mdx` 文件就行，文件名就是最终路由的 slug。
 
-## 使用指南
+Frontmatter 目前支持这些字段：
 
-### 写文章
-
-在 `src/content/posts/` 下新建 `.md` 或 `.mdx` 文件。文件名即为 URL slug（如 `my-post.md` → `/posts/my-post`）。
-
-#### Frontmatter 格式
-
-```markdown
+```md
 ---
 title: "文章标题"
-description: "一句话摘要，会显示在卡片和 SEO 描述中"
-pubDate: 2026-02-24
-updatedDate: 2026-02-25 # 可选，更新日期
-heroColor: "yellow" # 可选：yellow | red | blue | black（默认 yellow）
-tags: ["设计", "前端"] # 可选，标签列表
-draft: false # 可选，设为 true 则不会发布（默认 false）
+description: "一句话摘要"
+pubDate: 2026-04-07
+updatedDate: 2026-04-07 # 可选
+heroColor: "yellow" # yellow | red | blue | black
+tags: ["博客", "前端"]
+featured: false
+keywords: ["Astro", "Blog"]
+ogImage: "/og-default.svg"
+canonical: "https://example.com/your-post" # 可选
+draft: false
 ---
-
-正文使用标准 Markdown 语法。支持代码块、表格、引用、图片等。
 ```
 
-#### Frontmatter 字段说明
+## 现在的目录大概是这样
 
-| 字段          | 类型       | 必填 | 默认值   | 说明                                    |
-| ------------- | ---------- | :--: | -------- | --------------------------------------- |
-| `title`       | `string`   |  ✅  | —        | 文章标题，显示在 Hero 区和卡片上        |
-| `description` | `string`   |  ✅  | —        | 文章摘要，用于卡片预览和 `<meta>` 描述  |
-| `pubDate`     | `date`     |  ✅  | —        | 发布日期，格式 `YYYY-MM-DD`             |
-| `updatedDate` | `date`     |  ❌  | —        | 更新日期，显示在文章头部                |
-| `heroColor`   | `enum`     |  ❌  | `yellow` | 文章 Hero 区背景色和卡片顶部色条        |
-| `tags`        | `string[]` |  ❌  | `[]`     | 标签列表，显示在 Hero 区和卡片底部      |
-| `draft`       | `boolean`  |  ❌  | `false`  | 草稿模式，`true` 时不会出现在任何列表中 |
-
-#### 四种主题色效果
-
-- `yellow` — 复古亮黄 `#FFCB2F`，波普艺术感，黑色文字
-- `red` — 猩红撞色 `#E32A2A`，高视觉权重，白色文字
-- `blue` — 钴蓝高亮 `#1578EA`，信息感，白色文字
-- `black` — 绝对黑 `#000000`，极简重量感，白色文字
-
-#### MDX 高级用法
-
-将文件扩展名改为 `.mdx`，即可在 Markdown 中嵌入 Astro 组件：
-
-```mdx
----
-title: "使用组件的文章"
-description: "MDX 示例"
-pubDate: 2026-03-01
----
-
-import Button from "@/components/Button.astro";
-
-这是一段普通文本。
-
-<Button label="点击我" href="/about" variant="action" />
-
-继续写 Markdown...
+```text
+src/
+├── components/
+│   ├── BrutalistCursor.astro
+│   ├── Button.astro
+│   ├── Footer.astro
+│   ├── Header.astro
+│   ├── PostCard.astro
+│   ├── ScrollEngine.astro
+│   ├── SortControls.astro
+│   └── Tag.astro
+├── config/
+│   └── site.ts
+├── content/
+│   └── posts/
+├── data/
+│   └── media.ts
+├── layouts/
+│   ├── BaseLayout.astro
+│   └── PostLayout.astro
+├── lib/
+│   ├── media.ts
+│   └── posts.ts
+├── pages/
+│   ├── index.astro
+│   ├── archive.astro
+│   ├── about.astro
+│   ├── anime.astro
+│   ├── games.astro
+│   ├── 404.astro
+│   ├── rss.xml.ts
+│   └── posts/[slug].astro
+├── scripts/
+│   ├── scroll-engine.ts
+│   └── scroll-reveal.ts
+└── styles/
+    ├── animations.css
+    ├── brutalist.css
+    ├── global.css
+    ├── typography.css
+    └── variables.css
 ```
 
-### 添加游戏
+## 站点信息改哪里
 
-打开 `src/pages/games.astro`，在顶部的 `gameNames` 数组中追加游戏名称：
+博客标题、描述、导航、社交链接这些都集中在：
 
-```ts
-const gameNames: string[] = [
-  "Elden Ring",
-  "Hollow Knight",
-  "Cyberpunk 2077",
-  "你的新游戏名称", // ← 添加在这里
-];
-```
+`src/config/site.ts`
 
-**工作原理**：构建时 `src/lib/media.ts` 中的 `fetchAllGames()` 会逐个调用 [Steam Store API](https://store.steampowered.com)，根据名称搜索并获取：
+如果只是想换 GitHub、Bilibili、首页标题或者默认文案，改这个文件就够了。
 
-- 游戏封面图
-- Steam 商店链接
-- 游戏名称
+## 追番和游戏列表改哪里
 
-> ⚠️ 名称需要与 Steam 商店中的游戏名**尽量一致**，否则可能匹配到错误结果或返回空。
+现在不再走构建期抓取了，统一改成本地维护：
 
-### 添加追番
+- `src/data/media.ts` 放原始清单
+- `src/lib/media.ts` 负责整理成页面要用的数据
 
-打开 `src/pages/anime.astro`，在顶部的 `animeNames` 数组中追加番剧名称：
+这样做的好处很直接：构建稳定，不再因为第三方接口慢或者炸掉而拖死整个站点。
 
-```ts
-const animeNames: string[] = [
-  "进击的巨人",
-  "命运石之门",
-  "你的新番名称", // ← 添加在这里
-];
-```
+## 关于动效
 
-**工作原理**：构建时 `src/lib/media.ts` 中的 `fetchAllAnime()` 会逐个调用 [Bangumi API](https://bgm.tv)，根据名称搜索并获取：
+这套博客不是追求“顺滑”，而是追求“有实体感”。
 
-- 封面图
-- 评分
-- Bangumi 详情页链接
+所以站里很多地方都用了 `steps()`，包括：
 
-> ⚠️ 中文名、日文名均可，但建议使用 Bangumi 上最常用的名称以提高匹配准确度。
+- 页面入场
+- 卡片和按钮的悬停
+- 首页 Hero 的色块
+- 自定义光标的迟滞跟随
 
-### 编辑个人时间线
+不过我也尽量控制了强度，正文阅读区会比首页和卡片区安静很多，不会为了风格把可读性一起赔进去。
 
-打开 `src/pages/about.astro`，修改 `timeline` 数组：
+## 备注
 
-```ts
-const timeline = [
-  { year: "2024", title: "大学开始", desc: "进入大学，学习计算机科学。" },
-  { year: "2025", title: "加入社团", desc: "学习 UI/UX 设计和后端技术。" },
-  { year: "2026", title: "Digital Brutalism", desc: "创建了这个博客。" },
-  { year: "2027", title: "新里程碑", desc: "你的新事件描述。" }, // ← 添加在这里
-];
-```
-
-时间线会按数组顺序从上到下显示。
-
-### 自定义导航菜单
-
-编辑 `src/components/Header.astro` 顶部的两个数组：
-
-```ts
-// 顶栏直接显示的链接
-const navItems = [
-  { label: "首页", href: "/" },
-  { label: "文章", href: "/archive" },
-  { label: "关于", href: "/about" },
-];
-
-// 「更多 ▾」下拉菜单中的链接
-const dropdownItems = [
-  { label: "追番", href: "/anime" },
-  { label: "游戏", href: "/games" },
-];
-```
-
-添加新页面时，在对应数组中加一行即可自动出现在导航中。
-
-### 添加新页面
-
-在 `src/pages/` 下创建新的 `.astro` 文件，Astro 会自动生成对应路由：
-
-```astro
----
-// src/pages/links.astro → 访问路径 /links
-import BaseLayout from '@/layouts/BaseLayout.astro';
----
-
-<BaseLayout title="友链 — Blog" description="我的朋友们">
-  <section class="container" style="padding: var(--space-16) 0;">
-    <h1 class="text-display anim-enter">友链</h1>
-    <!-- 你的内容 -->
-  </section>
-</BaseLayout>
-```
-
-然后在 Header 的导航数组中添加链接即可。
-
----
-
-## 构建说明
-
-追番和游戏页面在构建时会逐个请求外部 API，首次构建可能需要较长时间：
-
-| 页面 | API             | 单条耗时 |
-| ---- | --------------- | -------- |
-| 追番 | Bangumi API     | ~350ms   |
-| 游戏 | Steam Store API | ~200ms   |
-
-后续构建（列表未变更时）速度会更快。
-
-## 设计系统速查
-
-| 元素     | CSS 变量 / 值                               |
-| -------- | ------------------------------------------- |
-| 基底色   | `var(--color-base)` · `#F9F8F4`             |
-| 边框     | `var(--border-thick)` · `4px solid #000`    |
-| 硬阴影   | `var(--shadow-lg)` · `8px 8px 0px 0px #000` |
-| 步进函数 | `var(--steps-small)` · `steps(3, end)`      |
-| 悬停效果 | `translate(-4px, -4px)` + 阴影放大          |
-| 点击效果 | `translate(2px, 2px)` + 阴影缩小            |
-
-## 技术栈
-
-- [Astro](https://astro.build) v5 — 静态站点生成
-- [TypeScript](https://www.typescriptlang.org) — 类型安全
-- 原生 CSS — Design Token + 组件化样式
-- [Bangumi API](https://bgm.tv/dev/app) — 番剧数据（构建时获取）
-- [Steam Web API](https://store.steampowered.com) — 游戏数据（构建时获取）
+这个仓库还会继续改，而且改动不一定都追求“更现代”，很多时候只是为了让它更像我自己会写、会用、也愿意长期维护的东西。
 
 ## License
 

@@ -1,58 +1,65 @@
 ---
 title: "构建定格滚动引擎"
-description: "深入解析如何通过 JavaScript 滚动劫持和帧率限制器实现 12FPS 的定格动画滚动效果。"
+description: "我为什么故意把滚动做卡，以及这套 12FPS 滚动是怎么实现的。"
 pubDate: 2026-02-20
+updatedDate: 2026-04-07
 heroColor: "blue"
-tags: ["JavaScript", "动效", "前端工程"]
+tags: ["JavaScript", "动效", "博客"]
 ---
 
-## 为什么要"降帧"？
+## 我为什么想把滚动做得不顺
 
-在现代前端工程中，达到 60FPS 的平滑动画一直被视为性能优化的最高准则。浏览器渲染引擎在 16.7ms 内完成一帧的计算，实现丝般顺滑的过渡效果。
+正常来说，前端做动画都在追求一件事：顺。
 
-但是——**高度的普及带来审美疲劳**。
+滚动顺、过渡顺、悬停顺，最好一切都顺到用户感觉不到阻力。这个方向当然没有问题，而且大多数场景里它就是对的。
 
-定格动画（Stop-motion）的生硬感能够带来：
+但我做这个博客的时候，反而对“太顺”这件事有点厌倦。很多网站的动效确实很平滑，可也正因为太平滑了，最后什么都没有留下。看过就过去了。
 
-- 强烈的**机械感**
-- **复古感**和粘土动画的抽帧感
-- 将数字界面的虚拟感转化为物理滞后性的**实体感**
+我想做一点不一样的东西，所以最后把主意打到了滚动上：既然这个站想要一点实体感，那干脆连滚动都不要那么丝滑，直接做成一种有点抽帧、有点拖拽、有点机械感的效果。
 
-## 实现原理
+## 第一件事：先把时间降下来
 
-### 时间维度：FPS 限制器
+思路其实不复杂，就是不要每一帧都更新。
 
-```typescript
+```ts
 const TARGET_FPS = 12;
-const FPS_INTERVAL = 1000 / TARGET_FPS; // ≈ 83.3ms
+const FPS_INTERVAL = 1000 / TARGET_FPS;
 
 function tick(now: number) {
   requestAnimationFrame(tick);
 
   const elapsed = now - then;
-  if (elapsed < FPS_INTERVAL) return; // 阻断
+  if (elapsed < FPS_INTERVAL) return;
 
-  then = now - (elapsed % FPS_INTERVAL); // 修正漂移
-
-  // 执行重绘...
+  then = now - (elapsed % FPS_INTERVAL);
 }
 ```
 
-关键在于**阻断与放行**：只有逝去的时间超过 83.3ms 时，才执行位移操作。
+浏览器本来会尽量往 60FPS 去跑，我这里相当于是主动说一句：不用那么勤快，先降到 12FPS 再说。
 
-### 空间维度：离散化
+这样一来，滚动的时间感就先变了。它不再是连着滑，而是开始一格一格地往前跳。
 
-```typescript
+## 第二件事：光降帧还不够
+
+后来我发现只降帧还是不够。
+
+因为如果每次位移还是按连续像素去算，那它虽然帧率低了，但味道还是不够硬。所以我又做了一层离散化处理：
+
+```ts
 function discretize(value: number, step: number = 4): number {
   return Math.round(value / step) * step;
 }
 ```
 
-即使在时间上实现了卡帧，如果位移像素是平滑递增的，效果依然不够硬朗。通过 `Math.round` 强制每次跳跃都是块状移动。
+说白了就是，别让它每次都走得那么细。既然要卡，就让它连位移都卡得彻底一点。
 
-## CSS 配合
+这样做完之后，整个滚动会更像一块东西被拽着往前走，而不是页面自己在“漂”。
 
-CSS 的 `steps()` 函数与 JavaScript 引擎协同工作：
+## 为什么还要配合 CSS 的 steps()
+
+如果只有滚动引擎是卡的，别的交互全是丝滑过渡，那整体还是会割裂。
+
+所以我后来基本把站里大部分关键交互都改成了 `steps()`，比如按钮和卡片：
 
 ```css
 .hover-click {
@@ -60,19 +67,17 @@ CSS 的 `steps()` 函数与 JavaScript 引擎协同工作：
     transform 0.2s steps(3, end),
     box-shadow 0.2s steps(3, end);
 }
-
-.hover-click:hover {
-  transform: translate(-6px, -6px);
-}
 ```
 
-`steps(3, end)` 将动画分为 3 个阶段，每个阶段结束时元素状态瞬间改变。
+这样页面在视觉语言上才是一套东西。不是只有滚动在抽帧，而是整个交互系统都在说同一种话。
 
-## 无障碍考量
+## 什么时候该收手
 
-对于使用 `prefers-reduced-motion` 偏好设置的用户，滚动引擎会自动禁用：
+这类东西有个很现实的问题：做过头了会难用。
 
-```typescript
+所以我从一开始就没打算把它强塞给所有场景。像 `prefers-reduced-motion` 这种情况，或者触屏设备，我都直接回退：
+
+```ts
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 ).matches;
@@ -82,6 +87,12 @@ if (!prefersReducedMotion && !isTouchDevice) {
 }
 ```
 
-触摸设备也会回退到原生滚动，因为滚动劫持会严重影响触屏用户体验。
+因为说到底，这还是个博客，不是一个拿来炫技的实验装置。风格可以有，脾气可以有，但不能为了风格把基本体验一起干掉。
 
-> 控制时间流逝感——这是前卫艺术在数字空间的终极表达。
+## 这套东西对我来说意味着什么
+
+我后来越来越觉得，动效不是“会不会写”的问题，而是“你想让界面呈现什么性格”的问题。
+
+对这个博客来说，我想要的不是顺滑，而是明确；不是轻盈，而是带点重量；不是像空气一样飘过去，而是像真的按着某个节奏在动。
+
+12FPS 的滚动引擎，就是这个想法里很直白的一部分。
