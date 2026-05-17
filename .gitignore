@@ -12,15 +12,30 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
 
 # macOS
 .DS_Store
 
-# editor
+# editor / IDE
 .vscode/
+.idea/
 *.swp
 *.swo
+*.code-workspace
+
+# AI tools
+.claude/
+.cursor/
+.copilot/
+.windsurf/
+.aider*
+.cline/
+.continue/
+
+# OS generated
+Thumbs.db
+Desktop.ini
 
 # astro
 .astro/
