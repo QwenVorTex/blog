@@ -29,9 +29,7 @@ const socialLinks = [
       <div class="about__grid">
         <div class="about__portrait card card--accent anim-enter anim-delay-1">
           <div class="about__avatar">
-            <div class="about__avatar-placeholder" aria-hidden="true">
-              <span>:)</span>
-            </div>
+            <img class="about__avatar-img" src="/images/avatar.png" alt={siteConfig.author.name} />
           </div>
           <div class="about__info">
             <h3 style="border:none; padding:0;">{siteConfig.author.name}</h3>
@@ -150,17 +148,12 @@ const socialLinks = [
     margin-bottom: var(--space-4);
   }
 
-  .about__avatar-placeholder {
+  .about__avatar-img {
     width: 100%;
     aspect-ratio: 1;
-    background: var(--color-border);
+    object-fit: cover;
     border: var(--border-thick);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-4xl);
-    color: var(--color-surface);
-    font-family: var(--font-mono);
+    display: block;
   }
 
   .about__info h3 {

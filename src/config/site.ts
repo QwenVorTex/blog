@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: 'TorQuen',
   title: 'TorQuen Blog',
   description: '一个关于设计、前端实现与数字审美的个人博客。',
-  url: 'https://qwen-blog-2i19bt4j.edgeone.cool',
+  url: 'https://blog.torquen.cfd',
   locale: 'zh-CN',
   ogImage: '/og-default.svg',
   author: {

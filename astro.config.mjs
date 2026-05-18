@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://qwenvertex.github.io",
+  site: "https://blog.torquen.cfd",
   integrations: [mdx(), sitemap()],
   output: "static",
   build: {
