@@ -2,14 +2,14 @@ export const siteConfig = {
   name: 'TorQuen Blog',
   shortName: 'TorQuen',
   title: 'TorQuen Blog',
-  description: '一个关于设计、前端实现与数字审美的个人博客。',
+  description: '一个躺平的个人博客。',
   url: 'https://blog.torquen.cfd',
   locale: 'zh-CN',
   ogImage: '/og-default.svg',
   author: {
     name: 'TorQuen',
-    role: '开发者 / 设计探索者',
-    bio: '记录设计观察、前端实现和个人项目的过程。',
+    role: '菜鸟 / 境外势力',
+    bio: '记录个人想法。',
     email: '',
   },
   social: {
@@ -30,9 +30,9 @@ export const siteConfig = {
   },
   home: {
     eyebrow: '个人博客 / Design and Code Notes',
-    title: '写设计，做前端，也记录正在形成的审美判断。',
+    title: '混吃等死的地方',
     subtitle:
-      '这里不只展示风格，也记录选择这种风格的理由：界面为什么这样做，交互为什么这样取舍，代码如何支撑它。',
+      '进来后你就会被作者的躺平思想洗脑，受到境外势力资助',
     ctaLabel: '从文章开始',
     ctaHref: '/archive',
     secondaryLabel: '了解作者',

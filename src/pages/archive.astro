@@ -74,8 +74,8 @@ const allTags = getTagStats(allPosts);
       </div>
 
       {allPosts.length === 0 && (
-        <div class="card card--flat" style="text-align: center; padding: var(--space-16);">
-          <p class="text-display" style="font-size: var(--text-2xl);">EMPTY</p>
+        <div class="card card--flat archive__empty">
+          <p class="text-display archive__empty-title">EMPTY</p>
           <p>还没有任何文章。</p>
         </div>
       )}
@@ -148,6 +148,15 @@ const allTags = getTagStats(allPosts);
   .archive__filter--accent { background: var(--color-accent); }
   .archive__filter--link { background: var(--color-link); color: var(--color-surface); }
   .archive__filter--action { background: var(--color-action); color: var(--color-surface); }
+
+  .archive__empty {
+    text-align: center;
+    padding: var(--space-16);
+  }
+
+  .archive__empty-title {
+    font-size: var(--text-2xl);
+  }
 
   @media (max-width: 768px) {
     .archive__filters-head {

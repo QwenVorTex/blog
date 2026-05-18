@@ -104,6 +104,11 @@ const rotation = rotations[index % rotations.length];
     text-decoration: none;
   }
 
+  .post-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px var(--color-border);
+  }
+
   .post-card__accent-bar {
     height: 8px;
     background: var(--card-accent);

@@ -8,7 +8,6 @@ interface Props {
 const { label, variant = 'default', href } = Astro.props;
 
 const variantClass = variant !== 'default' ? `tag--${variant}` : '';
-const Tag = href ? 'a' : 'span';
 ---
 
 {href ? (

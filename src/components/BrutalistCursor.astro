@@ -110,7 +110,7 @@ const reactorCells = Array.from({ length: 12 }, (_, index) => index);
   .brutalist-cursor {
     position: fixed;
     inset: 0;
-    z-index: 1100;
+    z-index: var(--z-cursor);
     pointer-events: none;
     opacity: 0;
     transition: opacity var(--dur-fast) var(--steps-small);
@@ -127,7 +127,7 @@ const reactorCells = Array.from({ length: 12 }, (_, index) => index);
     top: 0;
     width: 26px;
     height: 26px;
-    will-change: transform, width, height, background, box-shadow;
+    will-change: transform;
   }
 
   .brutalist-cursor__shadow {
@@ -258,6 +258,12 @@ const reactorCells = Array.from({ length: 12 }, (_, index) => index);
 </style>
 
 <script>
+  declare global {
+    interface Window {
+      __brutalistCursorReady?: boolean;
+    }
+  }
+
   function initBrutalistCursor() {
     if (window.__brutalistCursorReady) return;
 

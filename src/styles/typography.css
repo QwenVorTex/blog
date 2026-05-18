@@ -47,6 +47,12 @@ h6 {
   font-weight: 700;
 }
 
+.card h3 {
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
 p {
   margin-bottom: var(--space-5);
   max-width: 65ch;

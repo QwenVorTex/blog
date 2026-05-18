@@ -14,9 +14,9 @@ const totalCount = animeData.length;
         <span class="text-giant media-page__bg-text" aria-hidden="true">番</span>
         <h1 class="text-display anim-enter">追番</h1>
         <p class="media-page__stats anim-enter anim-delay-1">
-          共 <strong>{totalCount}</strong> 部 · 纯静态清单
+          共 <strong>{totalCount}</strong> 部
         </p>
-        <p class="media-page__intro anim-enter anim-delay-2">这一页现在改为本地维护，不再依赖构建期请求第三方接口。</p>
+        <p class="media-page__intro anim-enter anim-delay-2">一些看过后还记得的，好多都忘了。</p>
       </header>
 
       <SortControls target="#anime-grid" options={[
@@ -84,7 +84,7 @@ const totalCount = animeData.length;
   /* ── Media Grid ── */
   .media-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: var(--space-6);
   }
 
@@ -163,7 +163,7 @@ const totalCount = animeData.length;
 
   @media (max-width: 768px) {
     .media-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      grid-template-columns: 1fr;
       gap: var(--space-4);
     }
   }

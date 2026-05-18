@@ -38,9 +38,9 @@ const socialLinks = [
       <!-- Column 2 -->
       <div class="site-footer__col">
         <h4 class="site-footer__heading">导航</h4>
-        <a href="/" class="site-footer__link">首页</a>
-        <a href="/archive" class="site-footer__link">文章</a>
-        <a href="/about" class="site-footer__link">关于</a>
+        {siteConfig.navigation.primary.map((item) => (
+          <a href={item.href} class="site-footer__link">{item.label}</a>
+        ))}
       </div>
 
       <!-- Column 3 -->
@@ -92,6 +92,11 @@ const socialLinks = [
     width: 24px;
     height: 24px;
     background: var(--color-border);
+    transition: transform var(--dur-fast) var(--steps-small);
+  }
+
+  .site-footer__logo:hover .site-footer__logo-block {
+    transform: rotate(45deg);
   }
 
   .site-footer__logo-text {

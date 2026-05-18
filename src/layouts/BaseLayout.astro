@@ -14,6 +14,7 @@ interface Props {
   modifiedTime?: string;
   keywords?: string[];
   noindex?: boolean;
+  canonical?: string;
   structuredData?: Record<string, unknown> | null;
 }
 
@@ -26,11 +27,12 @@ const {
   modifiedTime,
   keywords = [],
   noindex = false,
+  canonical,
   structuredData = null,
 } = Astro.props;
 
 const siteURL = Astro.site ?? new URL(siteConfig.url);
-const canonicalURL = new URL(Astro.url.pathname, siteURL);
+const canonicalURL = canonical ? new URL(canonical) : new URL(Astro.url.pathname, siteURL);
 const ogImageURL = new URL(ogImage, siteURL).toString();
 const pageTitle =
   title === siteConfig.title || title.includes(siteConfig.shortName) || title.includes(siteConfig.name)

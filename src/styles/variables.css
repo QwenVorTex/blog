@@ -21,6 +21,7 @@
   --color-text:         #111111;
   --color-text-muted:   #444444;
   --color-code-bg:      #1a1a2e;
+  --color-code-text:    #e0e0e0;
 
   /* ── Typography ── */
   --font-display:       'Inter', 'Helvetica Neue', 'Arial Black', sans-serif;
@@ -86,6 +87,7 @@
   --z-header:     100;
   --z-overlay:    500;
   --z-modal:      1000;
+  --z-cursor:     1100;
 
   /* ── Step Animation ── */
   --steps-micro:  steps(2, end);

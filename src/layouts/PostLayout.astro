@@ -82,6 +82,7 @@ const articleStructuredData = {
   publishedTime={pubDate.toISOString()}
   modifiedTime={(updatedDate || pubDate).toISOString()}
   keywords={[...new Set([...keywords, ...tags])]}
+  canonical={canonical}
   structuredData={articleStructuredData}
 >
   <article class="post">
@@ -226,7 +227,7 @@ const articleStructuredData = {
   }
 
   .post__content :global(tr:nth-child(even)) {
-    background: rgba(0,0,0,0.03);
+    background: rgba(var(--color-border-rgb), 0.03);
   }
 
   @media (max-width: 768px) {

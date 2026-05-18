@@ -5,14 +5,14 @@ import Button from '@/components/Button.astro';
 
 <BaseLayout title="404 · 页面未找到" description="请求的页面不存在">
   <section class="not-found">
-    <div class="container" style="text-align: center;">
-      <span class="text-giant" style="position: relative; opacity: 0.06;" aria-hidden="true">404</span>
-      <h1 class="text-display anim-enter" style="font-size: clamp(4rem, 15vw, 10rem); margin-bottom: var(--space-6);">
+    <div class="not-found__inner container">
+      <span class="text-giant not-found__bg-text" aria-hidden="true">404</span>
+      <h1 class="text-display anim-enter not-found__title">
         404
       </h1>
-      <p class="anim-enter anim-delay-1" style="font-size: var(--text-xl); margin-bottom: var(--space-8); max-width: 40ch; margin-left: auto; margin-right: auto;">
+      <p class="anim-enter anim-delay-1 not-found__msg">
         这个页面不存在。也许它从未存在过。<br/>
-        或者它被粗野地拆除了。
+        或者它被拆除了。
       </p>
       <div class="anim-enter anim-delay-2">
         <Button label="返回首页" href="/" variant="primary" />
@@ -27,5 +27,27 @@ import Button from '@/components/Button.astro';
     min-height: 60vh;
     display: flex;
     align-items: center;
+  }
+
+  .not-found__inner {
+    text-align: center;
+  }
+
+  .not-found__bg-text {
+    position: relative;
+    opacity: 0.06;
+  }
+
+  .not-found__title {
+    font-size: clamp(4rem, 15vw, 10rem);
+    margin-bottom: var(--space-6);
+  }
+
+  .not-found__msg {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-8);
+    max-width: 40ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>

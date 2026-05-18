@@ -52,9 +52,6 @@ const tagStats = getTagStats(allPosts).slice(0, 8);
               <span>可以直接订阅更新</span>
             </li>
           </ul>
-          <p class="home-hero__panel-copy">
-            这个博客现在优先展示内容入口、主题分布和作者视角，而不是只展示视觉风格。
-          </p>
         </aside>
       </div>
     </div>
@@ -129,15 +126,15 @@ const tagStats = getTagStats(allPosts).slice(0, 8);
 
       <div class="grid grid--3">
         <div class="card card--accent scroll-reveal">
-          <h3 style="border:none; padding:0;">设计判断</h3>
+          <h3>设计判断</h3>
           <p>记录配色、排版、信息层级和可访问性的取舍，不只展示结果，也解释为什么这么做。</p>
         </div>
         <div class="card scroll-reveal">
-          <h3 style="border:none; padding:0;">实现过程</h3>
+          <h3>实现过程</h3>
           <p>把视觉语言落到 Astro、TypeScript 和 CSS 上，关注组件结构、构建方式和可维护性。</p>
         </div>
         <div class="card card--link scroll-reveal">
-          <h3 style="border:none; padding:0; color: inherit;">个人清单</h3>
+          <h3>个人清单</h3>
           <p>保留追番和游戏页面，但它们现在是纯静态清单，不再拖慢构建，也更适合长期维护。</p>
         </div>
       </div>
@@ -154,7 +151,7 @@ const tagStats = getTagStats(allPosts).slice(0, 8);
       </div>
 
       <div class="grid grid--brutalist">
-        {recentPosts.slice(0, 3).map((post, i) => (
+        {recentPosts.filter((post) => !featuredPosts.some((fp) => fp.id === post.id)).slice(0, 3).map((post, i) => (
           <PostCard
             title={post.data.title}
             description={post.data.description}
